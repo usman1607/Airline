@@ -56,8 +56,8 @@ public class AirlineManagementSystem{
             String subOption = reader.nextLine();
             handleManagePassengersAction(subOption);
 		}
-		showManageAirCraftsMenu();
-		//showSubMenu(option);
+		
+		showSubMenu(option);
 	}
 
 	public static void showManageAirCraftsMenu(){
@@ -65,7 +65,7 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 0 to return to Main Menu");
 		System.out.println("Enter 1 to Create Aircraft");
 		System.out.println("Enter 2 to List Aircrafts");
-		System.out.println("Enter 3 to Remove Aircrafts");
+		System.out.println("Enter 3 to Remove Aircraft");
 	}
 
 	public static void handleManageAirCraftsAction(String action){
@@ -78,8 +78,8 @@ public class AirlineManagementSystem{
 		}
 		else if(action.equals("3")){
 			System.out.println("Enter the Reg_No of Aircraft to remove?");
-			String Reg_No = reader.nextLine();
-			aircraftManager.removeAir(Reg_No);
+			String reg_No = reader.nextLine();
+			aircraftManager.removeAir(reg_No);
 		}
 		else if (action.equals("1")){
 
@@ -101,6 +101,7 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 0 to return to Main Menu");
 		System.out.println("Enter 1 to Create Flight");
 		System.out.println("Enter 2 to List Flights");
+		System.out.println("Enter 3 to Remove Flight");
 	}
 
 	public static void handleManageFlightsAction(String action){
@@ -109,6 +110,11 @@ public class AirlineManagementSystem{
 				showMainMenu();
 			}else if(action.equals("2")){
 				flightManager.list();
+			}
+			else if(action.equals("3")){
+				System.out.println("Enter the Flight_No of Flight to remove?");
+				String flight_No = reader.nextLine();
+				flightManager.removeFli(flight_No);
 			}
 			else if (action.equals("1")){
 
@@ -140,6 +146,7 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 0 to return to Main Menu");
 		System.out.println("Enter 1 to Create Booking");
 		System.out.println("Enter 2 to List Bookings");
+		System.out.println("Enter 3 to Remove Booking");
 	}
 
 	public static void handleManageBookingsAction(String action){
@@ -148,6 +155,11 @@ public class AirlineManagementSystem{
 				showMainMenu();
 			}else if(action.equals("2")){
 				bookingManager.list();
+			}
+			else if(action.equals("3")){
+				System.out.println("Enter the Booking_No of Booking to remove?");
+				String Booking_No = reader.nextLine();
+				bookingManager.removeBook(Booking_No);
 			}
 			else if (action.equals("1")){
 				System.out.println("Enter the Booking No:");
@@ -176,6 +188,7 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 0 to return to Main Menu");
 		System.out.println("Enter 1 to Create Passenger");
 		System.out.println("Enter 2 to List Passengers");
+		System.out.println("Enter 3 to Remove Passenger");
 	}
 
 	public static void handleManagePassengersAction(String action){
@@ -183,6 +196,11 @@ public class AirlineManagementSystem{
 			showMainMenu();
 		}else if(action.equals("2")){
 			passengerManager.list();
+		}
+		else if(action.equals("3")){
+			System.out.println("Enter Id of Passenger to remove?");
+			String id = reader.nextLine();
+			passengerManager.removePers(id);
 		}
 		else if (action.equals("1")){
 			System.out.println("Enter the Passenger Id:");
