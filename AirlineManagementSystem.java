@@ -5,12 +5,18 @@ public class AirlineManagementSystem{
 
 	static Scanner reader = new Scanner(System.in);
 
+	Aircraft aircraft = new Aircraft();
 	static AircraftManager aircraftManager = new AircraftManager();
-	static FlightManager flightManager = new FlightManager();
-	static BookingManager bookingManager = new BookingManager();
+
+	static FlightManager flightManagers = new FlightManager();
+	static FlightManager flightManager = new FlightManager(aircraftManager);
+
+	static BookingManager bookingManagers = new BookingManager();
+	static BookingManager bookingManager = new BookingManager(flightManagers, aircraftManager);
+
 	static PassengerManager passengerManager = new PassengerManager();
 
-	public static void main(String [] args){
+	public static void main(String [] args) {
        
 		boolean flag = true;
 		while(flag) {
@@ -38,8 +44,8 @@ public class AirlineManagementSystem{
 
 		if(option.equals("1")){
              showManageAirCraftsMenu();
-             String subOption = reader.nextLine();
-             handleManageAirCraftsAction(subOption);
+			 String subOption = reader.nextLine();
+			 handleManageAirCraftsAction(subOption);
 		}
 		else if(option.equals("2")) {
 			showManageFlightsMenu();
@@ -56,8 +62,7 @@ public class AirlineManagementSystem{
             String subOption = reader.nextLine();
             handleManagePassengersAction(subOption);
 		}
-		
-		showSubMenu(option);
+		//showSubMenu(option);
 	}
 
 	public static void showManageAirCraftsMenu(){
@@ -66,20 +71,40 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 1 to Create Aircraft");
 		System.out.println("Enter 2 to List Aircrafts");
 		System.out.println("Enter 3 to Remove Aircraft");
+		System.out.println("Enter 4 to Find an Aircraft");
+		System.out.println("Enter 5 to Update an Aircraft");
 	}
 
 	public static void handleManageAirCraftsAction(String action){
 
 		if(action.equals("0")){
-			
-			showMainMenu();
+			return;
+			//showMainMenu();
 		}else if(action.equals("2")){
 			aircraftManager.list();
 		}
 		else if(action.equals("3")){
-			System.out.println("Enter the Reg_No of Aircraft to remove?");
+			System.out.println("Enter the Reg_No of Aircraft to remove: ");
 			String reg_No = reader.nextLine();
 			aircraftManager.removeAir(reg_No);
+		}
+		else if(action.equals("4")){
+			System.out.println("Enter the Reg_No of Aircraft to find: ");
+			String reg_No = reader.nextLine();
+			aircraftManager.findAir(reg_No);
+		}
+		else if(action.equals("5")){
+			System.out.println("Enter the Reg_No of Aircraft to update: ");
+			String reg_No = reader.nextLine();
+
+			System.out.println("Enter the Aircraft Name: ");
+			String name = reader.nextLine();
+			System.out.println("Enter the Aircraft Type: ");
+			String type = reader.nextLine();
+			System.out.println("Enter the Aircraft Capacity: ");
+			int capacity = reader.nextInt();
+			reader.nextLine();
+			aircraftManager.update(reg_No, type, name, capacity);
 		}
 		else if (action.equals("1")){
 
@@ -92,7 +117,7 @@ public class AirlineManagementSystem{
 			System.out.println("Enter the Aircraft Capacity: ");
 			int aircraftCapacity = reader.nextInt();
 			reader.nextLine();
-			aircraftManager.create(aircraftCapacity, aircraftNo, aircraftType, aircraftName);
+			aircraftManager.create(aircraftNo, aircraftType, aircraftName, aircraftCapacity);
 		}
 	}
 
@@ -102,6 +127,8 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 1 to Create Flight");
 		System.out.println("Enter 2 to List Flights");
 		System.out.println("Enter 3 to Remove Flight");
+		System.out.println("Enter 4 to Find a Flight");
+		System.out.println("Enter 5 to Update a Flight");
 	}
 
 	public static void handleManageFlightsAction(String action){
@@ -115,6 +142,30 @@ public class AirlineManagementSystem{
 				System.out.println("Enter the Flight_No of Flight to remove?");
 				String flight_No = reader.nextLine();
 				flightManager.removeFli(flight_No);
+			}
+			else if(action.equals("4")){
+				System.out.println("Enter the Number of Flight to find?");
+				String number = reader.nextLine();
+				flightManager.findFli(number);
+			}
+			else if(action.equals("5")){
+				System.out.println("Enter the number of Flight to update: ");
+				String number = reader.nextLine();
+
+				//System.out.println("Enter the aircraft No:");
+				//String aircraftno = reader.nextLine();
+				System.out.println("Enter the Flight price: ");
+				double price = reader.nextDouble();
+				reader.nextLine();
+				System.out.println("Enter the Take_Off Point: ");
+				String takeOff_Point = reader.nextLine();
+				System.out.println("Enter Date and Time (dd/MM/yyyy hh:mm:ss): ");
+				String pDate = reader.nextLine();
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				Date date1 = formatter.parse(pDate);
+				System.out.println("Enter the Destination: ");
+				String destination = reader.nextLine();
+				flightManager.update(number, price, takeOff_Point, date1, destination);
 			}
 			else if (action.equals("1")){
 
@@ -216,6 +267,13 @@ public class AirlineManagementSystem{
 
 			passengerManager.create(id, name, address, email, phone_No);
 		}
+	}
+
+	public static int getAvailbleSeats(){
+		int availableSeat = 0;
+
+
+		return availableSeat;
 	}
 
 }

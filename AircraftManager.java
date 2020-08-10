@@ -4,7 +4,7 @@ public class AircraftManager {
 
     List<Aircraft> aircrafts = new ArrayList<Aircraft>();
     public void show(Aircraft a){
-        System.out.printf("%d %s %s %s \n",a.capacity, a.reg_No, a.type, a.name);
+        System.out.printf("%s %s %s %d \n", a.reg_No, a.type, a.name, a.capacity);
         //System.out.println(a.capacity + " " + a.reg_No);
     }
 
@@ -14,8 +14,8 @@ public class AircraftManager {
         }
     }
 
-    public void create(int capacity, String reg_No, String type, String name){
-        Aircraft a = new Aircraft(capacity, reg_No, type, name);
+    public void create(String reg_No, String type, String name, int capacity){
+        Aircraft a = new Aircraft(reg_No, type, name, capacity);
         aircrafts.add(a);
     }
 
@@ -28,6 +28,27 @@ public class AircraftManager {
         return null;
     }
 
+    public void findAir(String reg_No){
+        Aircraft aircr = find(reg_No);
+        if(aircr == null){
+            System.out.printf("There is no Aircfratf %s  amaong the Aircrafts...\n",reg_No); 
+            return;
+        }
+        System.out.printf("%s %s %s %d \n", aircr.reg_No, aircr.type, aircr.name, aircr.capacity);
+    }
+
+    public void update(String reg_No, String type, String name, int capacity) {
+        Aircraft aircr = find(reg_No);
+        if(aircr == null){
+            System.out.printf("There is no Aircfratf %s  amaong the Aircrafts...\n",reg_No); 
+            return;
+        }
+        aircr.capacity = capacity;
+        aircr.reg_No = reg_No;
+        aircr.type = type;
+        aircr.name = name;
+    }
+
     public void removeAir(String reg_No){
         Aircraft aircr = find(reg_No);
         if(aircr == null){
@@ -36,5 +57,5 @@ public class AircraftManager {
         }
         aircrafts.remove(aircr);
     }
-    
+
 }

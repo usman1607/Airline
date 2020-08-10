@@ -13,12 +13,12 @@ public class Aircraft {
         this.reg_No = reg_No;
     }
 
-    public Aircraft(int capacity, String reg_No){
+    public Aircraft(String reg_No, int capacity){
         this.capacity = capacity;
         this.reg_No = reg_No;
     }
 
-    public Aircraft(int capacity, String reg_No, String type, String name) {
+    public Aircraft(String reg_No, String type, String name, int capacity) {
         this.capacity = capacity;
         this.reg_No = reg_No;
         this.type = type;

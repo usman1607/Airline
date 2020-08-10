@@ -1,24 +1,27 @@
 import java.util.Date;
 
 public class Flight {
-    String flight_No;
-    String aircraft_No;
+    String number;
+    Aircraft aircraft;
     double price;
     String takeOff_Point;
     Date takeOff_Time;
     String destination;
     Date estimated_LandingTime;
 
+    //Aircraft aircraft = new Aircraft();
+
     public Flight() {
 
     }
 
-    public Flight(String flight_No, String aircraft_No, double price, String takeOff_Point, Date takeOff_Time, String destination){
-        this.flight_No = flight_No;
-        this.aircraft_No = aircraft_No;
+    public Flight(String number, Aircraft aircraft, double price, String takeOff_Point, Date takeOff_Time, String destination){
+        this.number = number;
+        this.aircraft = aircraft;
         this.price = price;
         this.takeOff_Point = takeOff_Point;
         this.takeOff_Time = takeOff_Time;
         this.destination = destination;
     }
+
 }

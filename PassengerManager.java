@@ -4,6 +4,8 @@ public class PassengerManager {
     
     List<Passenger> passengers = new ArrayList<Passenger>();
     BookingManager bookingManager = new BookingManager();
+
+    
     public void show(Passenger p){
         System.out.println(p.id + " " + p.name + " " + p.address + " " + p.email + " " + p.phone_No);
     }
