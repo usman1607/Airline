@@ -7,12 +7,16 @@ public class Passenger {
 
     Booking b = new Booking();
 
+    public Passenger() {
+        
+    }
+
     public Passenger(String name) {
         this.name = name;
     }
 
     public Passenger(String id, String name, String address, String email, String phone_No) {
-        this.id = b.passenger_Id;
+        this.id = id;
         this.name = name;
         this.address = address;
         this.email = email;

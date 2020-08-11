@@ -11,10 +11,13 @@ public class AirlineManagementSystem{
 	static FlightManager flightManagers = new FlightManager();
 	static FlightManager flightManager = new FlightManager(aircraftManager);
 
+	Booking booking = new Booking();
 	static BookingManager bookingManagers = new BookingManager();
-	static BookingManager bookingManager = new BookingManager(flightManagers, aircraftManager);
+	static BookingManager bookingManager = new BookingManager(flightManager);
 
-	static PassengerManager passengerManager = new PassengerManager();
+	Passenger passenger = new Passenger();
+	static PassengerManager passengerManagers = new PassengerManager();
+	static PassengerManager passengerManager = new PassengerManager(bookingManager);
 
 	public static void main(String [] args) {
        
@@ -198,6 +201,8 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 1 to Create Booking");
 		System.out.println("Enter 2 to List Bookings");
 		System.out.println("Enter 3 to Remove Booking");
+		System.out.println("Enter 4 to Find a Booking");
+		System.out.println("Enter 5 to Update a Booking");
 	}
 
 	public static void handleManageBookingsAction(String action){
@@ -212,11 +217,31 @@ public class AirlineManagementSystem{
 				String Booking_No = reader.nextLine();
 				bookingManager.removeBook(Booking_No);
 			}
+			else if(action.equals("4")){
+				System.out.println("Enter the Id of Booking to find?");
+				String id = reader.nextLine();
+				bookingManager.findBook(id);
+			}
+			else if(action.equals("5")){
+				System.out.println("Enter the Id of Booking to update: ");
+				String id = reader.nextLine();
+
+				//System.out.println("Enter the aircraft No:");
+				//String aircraftno = reader.nextLine();
+				System.out.println("Enter the Flight Number: ");
+				String flight_No = reader.nextLine();
+				System.out.println("Enter  Booking Date and Time (dd/MM/yyyy hh:mm:ss): ");
+				String pDate = reader.nextLine();
+				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				Date Date_Time = formatter.parse(pDate);
+				System.out.println("Enter the Seat_No: ");
+				int seat_No = reader.nextInt();
+				reader.nextLine();
+				bookingManager.update(id, flight_No, Date_Time, seat_No);
+			}
 			else if (action.equals("1")){
 				System.out.println("Enter the Booking No:");
 				String booking_No = reader.nextLine();
-				System.out.println("Enter the Passenger Id:");
-				String passenger_Id = reader.nextLine();
 				System.out.println("Enter the Flight No: ");
 				String flight_No = reader.nextLine();
 				System.out.println("Enter Booking Date and Time (dd/MM/yyyy hh:mm:ss): ");
@@ -227,7 +252,7 @@ public class AirlineManagementSystem{
 				int seat_No = reader.nextInt();
 				reader.nextLine();
 	
-				bookingManager.create(booking_No, passenger_Id, flight_No, date1, seat_No);
+				bookingManager.create(booking_No, flight_No, date1, seat_No);
 			}
 		}
         catch(Exception ex){
@@ -240,6 +265,8 @@ public class AirlineManagementSystem{
 		System.out.println("Enter 1 to Create Passenger");
 		System.out.println("Enter 2 to List Passengers");
 		System.out.println("Enter 3 to Remove Passenger");
+		System.out.println("Enter 4 to Find a Passenger");
+		System.out.println("Enter 5 to Update a Passenger");
 	}
 
 	public static void handleManagePassengersAction(String action){
@@ -252,6 +279,27 @@ public class AirlineManagementSystem{
 			System.out.println("Enter Id of Passenger to remove?");
 			String id = reader.nextLine();
 			passengerManager.removePers(id);
+		}
+		else if(action.equals("4")){
+			System.out.println("Enter the Id of Passenger to find?");
+			String id = reader.nextLine();
+			passengerManager.findPers(id);
+		}
+		else if(action.equals("5")){
+			System.out.println("Enter the Id of Passenger to update: ");
+			String id = reader.nextLine();
+
+			//System.out.println("Enter the aircraft No:");
+			//String aircraftno = reader.nextLine();
+			System.out.println("Enter the Passenger Name: ");
+			String name = reader.nextLine();
+			System.out.println("Enter the Passenger Address: ");
+			String address = reader.nextLine();
+			System.out.println("Enter the Passenger Email: ");
+			String email = reader.nextLine();
+			System.out.println("Enter the Passenger Phone No: ");
+			String phone_No = reader.nextLine();
+			passengerManager.update(id, name, address, email, phone_No);
 		}
 		else if (action.equals("1")){
 			System.out.println("Enter the Passenger Id:");
