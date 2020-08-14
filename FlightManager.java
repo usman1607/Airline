@@ -1,12 +1,40 @@
 import java.util.*;
+import java.io.*;
 
 public class FlightManager {
     
-    List<Flight> flights = new ArrayList<Flight>();
+    List<Flight> flights = new ArrayList<Flight>();;
     AircraftManager aircraftManager = new AircraftManager(); 
+    File file;
+    Writer writer;
 
     public FlightManager() {
+        //flights = new ArrayList<Flight>();
+        file = new File("flight.txt");
+        try{
+            if (!file.createNewFile())
+            {
+                loadFlights();
+            }
+            writer = new FileWriter(file, true);
+        }
+        catch(IOException exception)
+        {
+            System.out.println("An error occurred while creating the flight.txt file");
+            System.out.println(exception);
+        }
+    }
 
+    private void loadFlights() throws FileNotFoundException {
+        // file already exists
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNext())
+        {
+            String line = scanner.nextLine();
+            Flight flight = Flight.parse(line);
+            flights.add(flight);
+        }
+        scanner.close();
     }
 
     public FlightManager(AircraftManager aircraftManager) {
@@ -14,7 +42,7 @@ public class FlightManager {
     }
 
     public void show(Flight f){
-        System.out.printf("%s %s %f %s %s %s \n",f.number, f.aircraft, f.price, f.takeOff_Point, f.takeOff_Time, f.destination);
+        System.out.printf("%s %s %f %s %s %s \n",f.number, f.aircraftNo, f.price, f.takeOff_Point, f.takeOff_Time, f.destination);
         //System.out.println(f.number + " " + airc.reg_No + " " + f.price + " " + f.takeOff_Point + " " + f.takeOff_Time + " " + f.destination);
     }
 
@@ -25,14 +53,40 @@ public class FlightManager {
     }
 
    // Aircraft airc = new Aircraft();
-    public void create(String number, String aircraft_No, double price, String takeOff_Point, Date takeOff_Time, String destination){
+    public void create(String number, String aircraft_No, double price, String takeOff_Point, String takeOff_Time, String destination){
         Aircraft aircraft = aircraftManager.find(aircraft_No);
         if(aircraft == null){
             System.out.printf("Aircfratf %s cannot be found \n",aircraft_No); 
             return;
         }
-        Flight f = new Flight(number, aircraft, price, takeOff_Point, takeOff_Time, destination);
+        Flight f = new Flight(number, aircraft_No, price, takeOff_Point, takeOff_Time, destination);
         flights.add(f);
+        try{
+            if (writer == null)
+            {
+               throw new Exception("The writer could not be initialized");
+            }
+
+            writer.append(f.toString() + "\n");
+            writer.flush();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
+		}
+    }
+
+    public void updatedOuput() {
+        try{
+            writer = new PrintWriter(file);
+            
+            for(Flight f: flights){
+                writer.append(f.toString() + "\n");
+            }
+            writer.flush();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
+		}
     }
 
     public Flight find(String flight_No) {
@@ -50,10 +104,10 @@ public class FlightManager {
             System.out.printf("There is no Flight %s  amaong the Flights...\n",flight_No); 
             return;
         }
-        System.out.printf("%s %s %f %s %s %s \n",fli.number, fli.aircraft, fli.price, fli.takeOff_Point, fli.takeOff_Time, fli.destination);
+        System.out.printf("%s %s %f %s %s %s \n",fli.number, fli.aircraftNo, fli.price, fli.takeOff_Point, fli.takeOff_Time, fli.destination);
     }
 
-    public void update(String number, double price, String takeOff_Point, Date takeOff_Time, String destination) {
+    public void update(String number, double price, String takeOff_Point, String takeOff_Time, String destination) {
         Flight fli = find(number);
         if(fli == null) {
             System.out.printf("There is no Flight %s  amaong the Flights...\n", number); 
@@ -65,6 +119,7 @@ public class FlightManager {
         fli.takeOff_Point = takeOff_Point;
         fli.takeOff_Time = takeOff_Time;
         fli.destination = destination;
+        updatedOuput();
     }
 
     public void removeFli(String flight_No){
@@ -74,6 +129,7 @@ public class FlightManager {
             return;
         }
         flights.remove(fli);
+        updatedOuput();
     }
     
 }

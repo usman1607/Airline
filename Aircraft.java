@@ -24,5 +24,17 @@ public class Aircraft {
         this.type = type;
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return capacity + "\t" + reg_No + "\t" + type + "\t" + name;
+    }
+
+    public static Aircraft parse(String line)
+    {
+        String[] props = line.split("\t");
+        int capacity = Integer.parseInt(props[0]);
+        return new Aircraft(props[1], props[2], props[3], capacity);
+    }
 }
 

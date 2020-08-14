@@ -1,12 +1,41 @@
 import java.util.*;
+import java.io.*;
 
 public class PassengerManager {
     
-    List<Passenger> passengers = new ArrayList<Passenger>();
+    List<Passenger> passengers;
+    File file;
+    Writer writer;
     BookingManager bookingManager = new BookingManager();
 
     public PassengerManager() {
+        passengers = new ArrayList<Passenger>();
+        file = new File("passenger.txt");
+        try{
+            if (!file.createNewFile())
+            {
+                loadPassengers();
+            }
+            writer = new FileWriter(file, true);
+        }
+        catch(IOException exception)
+        {
+            System.out.println("An error occurred while creating the passenger.txt file");
+            System.out.println(exception);
+        }
+    }
 
+
+    private void loadPassengers() throws FileNotFoundException {
+        // file already exists
+        Scanner scanner = new Scanner(file);
+        while(scanner.hasNext())
+        {
+            String line = scanner.nextLine();
+            Passenger passenger = Passenger.parse(line);
+            passengers.add(passenger);
+        }
+        scanner.close();
     }
 
     public PassengerManager(BookingManager bookingManager) {
@@ -31,6 +60,32 @@ public class PassengerManager {
         }
         Passenger p = new Passenger(id, name, address, email, phone_No);
         passengers.add(p);
+        try{
+            if (writer == null)
+            {
+               throw new Exception("The writer could not be initialized");
+            }
+
+            writer.append(p.toString() + "\n");
+            writer.flush();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
+		}
+    }
+
+    public void updatedOuput() {
+        try{
+            writer = new PrintWriter(file);
+            
+            for(Passenger p: passengers){
+                writer.append(p.toString() + "\n");
+            }
+            writer.flush();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
+		}
     }
 
     public Passenger find(String id){
@@ -62,6 +117,7 @@ public class PassengerManager {
         pers.address = address;
         pers.email = email;
         pers.phone_No = phone_No;
+        updatedOuput();
     }
 
     public void removePers(String id){
@@ -71,6 +127,7 @@ public class PassengerManager {
             return;
         }
         passengers.remove(pers);
+        updatedOuput();
     }
     
 }

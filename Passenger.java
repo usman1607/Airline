@@ -22,4 +22,16 @@ public class Passenger {
         this.email = email;
         this.phone_No = phone_No;
     }
+
+    @Override
+    public String toString() {
+        return id + "\t" + name + "\t" + address + "\t" + email + "\t" + phone_No;
+    }
+
+    public static Passenger parse(String line)
+    {
+        String[] props = line.split("\t");
+        //int capacity = Integer.parseInt(props[0]);
+        return new Passenger(props[0], props[1], props[2], props[3], props[4]);
+    }
 }

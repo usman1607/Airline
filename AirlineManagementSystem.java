@@ -1,5 +1,6 @@
 import java.util.*;
-import java.text.*;
+//import java.text.*;
+import java.io.*;
 
 public class AirlineManagementSystem{
 
@@ -8,16 +9,16 @@ public class AirlineManagementSystem{
 	Aircraft aircraft = new Aircraft();
 	static AircraftManager aircraftManager = new AircraftManager();
 
-	static FlightManager flightManagers = new FlightManager();
-	static FlightManager flightManager = new FlightManager(aircraftManager);
+	static FlightManager flightManager = new FlightManager();
+	//static FlightManager flightManager = new FlightManager(aircraftManager);
 
 	Booking booking = new Booking();
-	static BookingManager bookingManagers = new BookingManager();
-	static BookingManager bookingManager = new BookingManager(flightManager);
+	static BookingManager bookingManager = new BookingManager();
+	//static BookingManager bookingManager = new BookingManager(flightManager);
 
 	Passenger passenger = new Passenger();
-	static PassengerManager passengerManagers = new PassengerManager();
-	static PassengerManager passengerManager = new PassengerManager(bookingManager);
+	static PassengerManager passengerManager = new PassengerManager();
+	//static PassengerManager passengerManager = new PassengerManager(bookingManager);
 
 	public static void main(String [] args) {
        
@@ -79,48 +80,52 @@ public class AirlineManagementSystem{
 	}
 
 	public static void handleManageAirCraftsAction(String action){
+		try{
+			if(action.equals("0")){
+				return;
+				//showMainMenu();
+			}else if(action.equals("2")){
+				aircraftManager.list();
+			}
+			else if(action.equals("3")){
+				System.out.println("Enter the Reg_No of Aircraft to remove: ");
+				String reg_No = reader.nextLine();
+				aircraftManager.removeAir(reg_No);
+			}
+			else if(action.equals("4")){
+				System.out.println("Enter the Reg_No of Aircraft to find: ");
+				String reg_No = reader.nextLine();
+				aircraftManager.findAir(reg_No);
+			}
+			else if(action.equals("5")){
+				System.out.println("Enter the Reg_No of Aircraft to update: ");
+				String reg_No = reader.nextLine();
 
-		if(action.equals("0")){
-			return;
-			//showMainMenu();
-		}else if(action.equals("2")){
-			aircraftManager.list();
+				System.out.println("Enter the Aircraft Name: ");
+				String name = reader.nextLine();
+				System.out.println("Enter the Aircraft Type: ");
+				String type = reader.nextLine();
+				System.out.println("Enter the Aircraft Capacity: ");
+				int capacity = reader.nextInt();
+				reader.nextLine();
+				aircraftManager.update(reg_No, type, name, capacity);
+				
+			}
+			else if (action.equals("1")){
+				System.out.println("Enter the Aircraft No: ");
+				String aircraftNo = reader.nextLine();
+				System.out.println("Enter the Aircraft Name: ");
+				String aircraftName = reader.nextLine();
+				System.out.println("Enter the Aircraft Type: ");
+				String aircraftType = reader.nextLine();
+				System.out.println("Enter the Aircraft Capacity: ");
+				int aircraftCapacity = reader.nextInt();
+				reader.nextLine();
+				aircraftManager.create(aircraftNo, aircraftType, aircraftName, aircraftCapacity);
+			}
 		}
-		else if(action.equals("3")){
-			System.out.println("Enter the Reg_No of Aircraft to remove: ");
-			String reg_No = reader.nextLine();
-			aircraftManager.removeAir(reg_No);
-		}
-		else if(action.equals("4")){
-			System.out.println("Enter the Reg_No of Aircraft to find: ");
-			String reg_No = reader.nextLine();
-			aircraftManager.findAir(reg_No);
-		}
-		else if(action.equals("5")){
-			System.out.println("Enter the Reg_No of Aircraft to update: ");
-			String reg_No = reader.nextLine();
-
-			System.out.println("Enter the Aircraft Name: ");
-			String name = reader.nextLine();
-			System.out.println("Enter the Aircraft Type: ");
-			String type = reader.nextLine();
-			System.out.println("Enter the Aircraft Capacity: ");
-			int capacity = reader.nextInt();
-			reader.nextLine();
-			aircraftManager.update(reg_No, type, name, capacity);
-		}
-		else if (action.equals("1")){
-
-            System.out.println("Enter the Aircraft No: ");
-			String aircraftNo = reader.nextLine();
-			System.out.println("Enter the Aircraft Name: ");
-			String aircraftName = reader.nextLine();
-			System.out.println("Enter the Aircraft Type: ");
-			String aircraftType = reader.nextLine();
-			System.out.println("Enter the Aircraft Capacity: ");
-			int aircraftCapacity = reader.nextInt();
-			reader.nextLine();
-			aircraftManager.create(aircraftNo, aircraftType, aircraftName, aircraftCapacity);
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
 		}
 	}
 
@@ -163,16 +168,35 @@ public class AirlineManagementSystem{
 				System.out.println("Enter the Take_Off Point: ");
 				String takeOff_Point = reader.nextLine();
 				System.out.println("Enter Date and Time (dd/MM/yyyy hh:mm:ss): ");
-				String pDate = reader.nextLine();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-				Date date1 = formatter.parse(pDate);
+				//String pDate = reader.nextLine();
+				//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				//Date date1 = formatter.parse(pDate);
+				String date1 = reader.nextLine();
 				System.out.println("Enter the Destination: ");
 				String destination = reader.nextLine();
 				flightManager.update(number, price, takeOff_Point, date1, destination);
 			}
 			else if (action.equals("1")){
-
+				File file = new File("flight.txt");
+				if(!file.exists()) {
+					System.out.printf("File %s does not exist! ", file.getName());
+				}
 				System.out.println("Enter the flight No:");
+				String flight_No = reader.nextLine();
+				System.out.println("Enter the aircraft No:");
+				String aircraftno = reader.nextLine();
+				System.out.println("Enter the Flight price: ");
+				double price = reader.nextDouble();
+				reader.nextLine();
+				System.out.println("Enter the Take_Off Point: ");
+				String takeOff_Point = reader.nextLine();
+				System.out.println("Enter Date and Time (dd/MM/yyyy hh:mm:ss): ");
+				String pDate = reader.nextLine();
+				System.out.println("Enter the Destination: ");
+				String destination = reader.nextLine();
+				flightManager.create(flight_No, aircraftno, price, takeOff_Point, pDate, destination);
+				
+				/*System.out.println("Enter the flight No:");
 				String flight_No = reader.nextLine();
 				System.out.println("Enter the aircraft No:");
 				String aircraftno = reader.nextLine();
@@ -188,7 +212,7 @@ public class AirlineManagementSystem{
 				System.out.println("Enter the Destination: ");
 				String destination = reader.nextLine();
 				
-				flightManager.create(flight_No, aircraftno, price, takeOff_Point, date1, destination);
+				flightManager.create(flight_No, aircraftno, price, takeOff_Point, date1, destination);*/
 			}
 		}
         catch(Exception ex){
@@ -232,27 +256,31 @@ public class AirlineManagementSystem{
 				String flight_No = reader.nextLine();
 				System.out.println("Enter  Booking Date and Time (dd/MM/yyyy hh:mm:ss): ");
 				String pDate = reader.nextLine();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-				Date Date_Time = formatter.parse(pDate);
+				//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				//Date Date_Time = formatter.parse(pDate);
 				System.out.println("Enter the Seat_No: ");
 				int seat_No = reader.nextInt();
 				reader.nextLine();
-				bookingManager.update(id, flight_No, Date_Time, seat_No);
+				bookingManager.update(id, flight_No, pDate, seat_No);
 			}
 			else if (action.equals("1")){
+				File file = new File("booking.txt");
+				if(!file.exists()) {
+					System.out.printf("File %s does not exist! ", file.getName());
+				}
 				System.out.println("Enter the Booking No:");
 				String booking_No = reader.nextLine();
 				System.out.println("Enter the Flight No: ");
 				String flight_No = reader.nextLine();
 				System.out.println("Enter Booking Date and Time (dd/MM/yyyy hh:mm:ss): ");
 				String bookingDate = reader.nextLine();
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-				Date date1 = formatter.parse(bookingDate);
+				//SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+				//Date date1 = formatter.parse(bookingDate);
 				System.out.println("Enter the Seat No: ");
 				int seat_No = reader.nextInt();
 				reader.nextLine();
 	
-				bookingManager.create(booking_No, flight_No, date1, seat_No);
+				bookingManager.create(booking_No, flight_No, bookingDate, seat_No);
 			}
 		}
         catch(Exception ex){
@@ -302,6 +330,10 @@ public class AirlineManagementSystem{
 			passengerManager.update(id, name, address, email, phone_No);
 		}
 		else if (action.equals("1")){
+			File file = new File("aircraft.txt");
+			if(!file.exists()) {
+				System.out.printf("File not %s does not exist!", file.getName());
+			}
 			System.out.println("Enter the Passenger Id:");
 			String id = reader.nextLine();
 			System.out.println("Enter the Passenger Name:");
