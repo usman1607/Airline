@@ -6,7 +6,7 @@ public class PassengerManager {
     List<Passenger> passengers;
     File file;
     Writer writer;
-    BookingManager bookingManager = new BookingManager();
+    BookingManager bookingManager;
 
     public PassengerManager() {
         passengers = new ArrayList<Passenger>();
@@ -53,6 +53,7 @@ public class PassengerManager {
     }
 
     public void create(String id, String name, String address, String email, String phone_No) {
+        bookingManager = new BookingManager();
         Booking booking = bookingManager.find(id);
         if(booking == null){
             System.out.printf("Passenger Id %s cannot be found in Bookings \n",id); 
@@ -66,7 +67,7 @@ public class PassengerManager {
                throw new Exception("The writer could not be initialized");
             }
 
-            writer.append(p.toString() + "\n");
+            writer.append(p.toString() + System.lineSeparator());
             writer.flush();
         }
         catch(Exception ex){
@@ -79,7 +80,7 @@ public class PassengerManager {
             writer = new PrintWriter(file);
             
             for(Passenger p: passengers){
-                writer.append(p.toString() + "\n");
+                writer.append(p.toString() + System.lineSeparator());
             }
             writer.flush();
         }

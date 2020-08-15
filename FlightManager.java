@@ -3,13 +3,13 @@ import java.io.*;
 
 public class FlightManager {
     
-    List<Flight> flights = new ArrayList<Flight>();;
-    AircraftManager aircraftManager = new AircraftManager(); 
+    List<Flight> flights;
+    AircraftManager aircraftManager; 
     File file;
     Writer writer;
 
     public FlightManager() {
-        //flights = new ArrayList<Flight>();
+        flights = new ArrayList<Flight>();
         file = new File("flight.txt");
         try{
             if (!file.createNewFile())
@@ -54,6 +54,7 @@ public class FlightManager {
 
    // Aircraft airc = new Aircraft();
     public void create(String number, String aircraft_No, double price, String takeOff_Point, String takeOff_Time, String destination){
+        aircraftManager = new AircraftManager();
         Aircraft aircraft = aircraftManager.find(aircraft_No);
         if(aircraft == null){
             System.out.printf("Aircfratf %s cannot be found \n",aircraft_No); 
@@ -67,7 +68,7 @@ public class FlightManager {
                throw new Exception("The writer could not be initialized");
             }
 
-            writer.append(f.toString() + "\n");
+            writer.append(f.toString() + System.lineSeparator());
             writer.flush();
         }
         catch(Exception ex){
@@ -80,7 +81,7 @@ public class FlightManager {
             writer = new PrintWriter(file);
             
             for(Flight f: flights){
-                writer.append(f.toString() + "\n");
+                writer.append(f.toString() + System.lineSeparator() );
             }
             writer.flush();
         }

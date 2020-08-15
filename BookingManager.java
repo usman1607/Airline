@@ -6,7 +6,7 @@ public class BookingManager {
     List<Booking> bookings;
     File file;
     Writer writer;
-    FlightManager flightManager = new FlightManager(); 
+    FlightManager flightManager; 
     AircraftManager aircraftManager = new AircraftManager();
 
     //public BookingManager() {
@@ -57,6 +57,7 @@ public class BookingManager {
     }
 
     public void create(String id, String flight_No, String date_Time, int seat_No) {
+        flightManager = new FlightManager();
         Flight flight = flightManager.find(flight_No);
         if(flight ==null){
             System.out.printf("Flight %s cannot be found \n",flight_No); 
@@ -70,7 +71,7 @@ public class BookingManager {
                 throw new Exception("The writer could not be initialized");
             }
 
-            writer.append(b.toString() + "\n");
+            writer.append(b.toString() + System.lineSeparator());
             writer.flush();
         }
         catch(Exception ex){
@@ -83,7 +84,7 @@ public class BookingManager {
             writer = new PrintWriter(file);
             
             for(Booking b: bookings){
-                writer.append(b.toString() + "\n");
+                writer.append(b.toString() + System.lineSeparator());
             }
             writer.flush();
         }

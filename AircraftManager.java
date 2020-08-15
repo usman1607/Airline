@@ -30,12 +30,15 @@ public class AircraftManager {
         while(scanner.hasNext())
         {
             String line = scanner.nextLine();
+            Aircraft aircraft = Aircraft.parse(line);
+            aircrafts.add(aircraft);
+            /*String line = scanner.nextLine();
             if (line.trim().isEmpty())
             {
                 continue;
             }
             Aircraft aircraft = Aircraft.parse(line);
-            aircrafts.add(aircraft);
+            aircrafts.add(aircraft);*/
         }
         scanner.close();
     }
@@ -60,10 +63,9 @@ public class AircraftManager {
             throw new Exception("The writer could not be initialized");
         }
 
-        writer.append("\n" + a.toString() + "\n");
+        writer.append(a.toString() + System.lineSeparator());
+        //writer.println();
         writer.flush();
-        //writer.write("\n");
-        //writer.flush();
     }
 
     public Aircraft find(String reg_No) {
@@ -86,10 +88,10 @@ public class AircraftManager {
 
     public void updatedOuput() {
         try{
-            writer = new PrintWriter(file);
+            writer = new FileWriter(file);
             
             for(Aircraft a: aircrafts){
-                writer.append(a.toString() + "\n");
+                writer.append(a.toString() + System.lineSeparator());
             }
             writer.flush();
         }
