@@ -181,20 +181,21 @@ public class AirlineManagementSystem{
 				if(!file.exists()) {
 					System.out.printf("File %s does not exist! ", file.getName());
 				}
-				System.out.println("Enter the flight No:");
+				System.out.print("Enter the flight No: ");
 				String flight_No = reader.nextLine();
-				System.out.println("Enter the aircraft No:");
+				System.out.print("Enter the aircraft No: ");
 				String aircraftno = reader.nextLine();
-				System.out.println("Enter the Flight price: ");
-				double price = reader.nextDouble();
-				reader.nextLine();
-				System.out.println("Enter the Take_Off Point: ");
+				System.out.print("Enter the Flight price: ");
+				double price = reader.nextDouble(); reader.nextLine();
+				System.out.print("Enter the Take_Off Point: ");
 				String takeOff_Point = reader.nextLine();
-				System.out.println("Enter Date and Time (dd/MM/yyyy hh:mm:ss): ");
+				System.out.print("Enter Date and Time (dd/MM/yyyy hh:mm:ss): ");
 				String pDate = reader.nextLine();
-				System.out.println("Enter the Destination: ");
+				System.out.print("Enter the Destination: ");
 				String destination = reader.nextLine();
-				flightManager.create(flight_No, aircraftno, price, takeOff_Point, pDate, destination);
+				System.out.print("Enter total available seat: ");
+				int availableSeats = reader.nextInt(); reader.nextLine();
+				flightManager.create(flight_No, aircraftno, price, takeOff_Point, pDate, destination, availableSeats);
 				
 				/*System.out.println("Enter the flight No:");
 				String flight_No = reader.nextLine();
@@ -222,7 +223,7 @@ public class AirlineManagementSystem{
 	
 	public static void showManageBookingsMenu(){
 		System.out.println("Enter 0 to return to Main Menu");
-		System.out.println("Enter 1 to Create Booking");
+		System.out.println("Enter 1 to Book a Flight");
 		System.out.println("Enter 2 to List Bookings");
 		System.out.println("Enter 3 to Remove Booking");
 		System.out.println("Enter 4 to Find a Booking");
@@ -264,11 +265,13 @@ public class AirlineManagementSystem{
 				bookingManager.update(id, flight_No, pDate, seat_No);
 			}
 			else if (action.equals("1")){
-				File file = new File("booking.txt");
-				if(!file.exists()) {
-					System.out.printf("File %s does not exist! ", file.getName());
-				}
-				System.out.println("Enter the Booking No:");
+				System.out.print("Enter your take off point: ");
+				String takeOffPoint = reader.nextLine();
+				System.out.print("Enter your destination: ");
+				String destination = reader.nextLine();
+				bookingManager.bookFlight(takeOffPoint, destination);
+
+				/*System.out.println("Enter the Booking No:");
 				String booking_No = reader.nextLine();
 				System.out.println("Enter the Flight No: ");
 				String flight_No = reader.nextLine();
@@ -280,7 +283,7 @@ public class AirlineManagementSystem{
 				int seat_No = reader.nextInt();
 				reader.nextLine();
 	
-				bookingManager.create(booking_No, flight_No, bookingDate, seat_No);
+				bookingManager.create(booking_No, flight_No, bookingDate, seat_No);*/
 			}
 		}
         catch(Exception ex){

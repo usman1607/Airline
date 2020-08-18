@@ -3,6 +3,7 @@ import java.io.*;
 
 public class FlightManager {
     
+    List<Flight> ava_f;
     List<Flight> flights;
     AircraftManager aircraftManager; 
     File file;
@@ -42,7 +43,7 @@ public class FlightManager {
     }
 
     public void show(Flight f){
-        System.out.printf("%s %s %f %s %s %s \n",f.number, f.aircraftNo, f.price, f.takeOff_Point, f.takeOff_Time, f.destination);
+        System.out.printf("%s %s %f %s %s %s \n",f.number, f.aircraftNo, f.price, f.takeOff_Point, f.takeOff_Time, f.destination, f.availebleSeats);
         //System.out.println(f.number + " " + airc.reg_No + " " + f.price + " " + f.takeOff_Point + " " + f.takeOff_Time + " " + f.destination);
     }
 
@@ -53,14 +54,14 @@ public class FlightManager {
     }
 
    // Aircraft airc = new Aircraft();
-    public void create(String number, String aircraft_No, double price, String takeOff_Point, String takeOff_Time, String destination){
+    public void create(String number, String aircraft_No, double price, String takeOff_Point, String takeOff_Time, String destination, int availebleSeats){
         aircraftManager = new AircraftManager();
         Aircraft aircraft = aircraftManager.find(aircraft_No);
         if(aircraft == null){
             System.out.printf("Aircfratf %s cannot be found \n",aircraft_No); 
             return;
         }
-        Flight f = new Flight(number, aircraft_No, price, takeOff_Point, takeOff_Time, destination);
+        Flight f = new Flight(number, aircraft_No, price, takeOff_Point, takeOff_Time, destination, availebleSeats);
         flights.add(f);
         try{
             if (writer == null)
@@ -97,6 +98,41 @@ public class FlightManager {
             }
         }
         return null;
+    }
+
+    public void findAvailableFlight(String takeOffPoint, String Destination) {
+        int count = 0;
+        ava_f = new ArrayList<Flight>();
+        for(Flight f: flights){
+            if((f.takeOff_Point.equals(takeOffPoint)) && (f.destination.equals(Destination)) && (f.availebleSeats > 0)){
+                ava_f.add(f);
+                count++;
+            }
+        }
+        if(count == 0) {
+            System.out.printf("There is no Flight going from %s to %s available now.\n", takeOffPoint, Destination);
+            return;
+        }else{
+            int sNo = 1;
+            System.out.printf("There are/is %d Flight going from %s to %s available, they are:\n", count, takeOffPoint, Destination);
+            System.out.println("S/N" + "\t" + "Flight No." + "\t\t" + "Take Off Point" + "\t\t" + "Destination" + "\t" + "Price");
+            System.out.println("============================================================================");
+            for(Flight aF : ava_f) {
+                System.out.println(sNo + "\t" + aF.number + "\t" + aF.takeOff_Point + "\t" + aF.destination + "\t" + aF.price);
+                sNo++;
+            }
+        }
+    }
+
+    public int checkAvaFlight(String flightNo) {
+        int num = 0;
+        for(Flight f : ava_f) {
+            if(f.number.equals(flightNo)) {
+                num++;
+            }
+        }
+
+        return num;
     }
 
     public void findFli(String flight_No){

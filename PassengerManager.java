@@ -53,12 +53,14 @@ public class PassengerManager {
     }
 
     public void create(String id, String name, String address, String email, String phone_No) {
-        bookingManager = new BookingManager();
+        /*bookingManager = new BookingManager();
         Booking booking = bookingManager.find(id);
         if(booking == null){
             System.out.printf("Passenger Id %s cannot be found in Bookings \n",id); 
             return;
-        }
+        }*/
+
+        
         Passenger p = new Passenger(id, name, address, email, phone_No);
         passengers.add(p);
         try{

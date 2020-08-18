@@ -6,7 +6,9 @@ public class BookingManager {
     List<Booking> bookings;
     File file;
     Writer writer;
-    FlightManager flightManager; 
+    FlightManager flightManager;
+    PassengerManager passengerManager;
+    Scanner reader = new Scanner(System.in);
     AircraftManager aircraftManager = new AircraftManager();
 
     //public BookingManager() {
@@ -64,6 +66,61 @@ public class BookingManager {
             return;
         }
         Booking b = new Booking(id, flight_No, date_Time, seat_No);
+        bookings.add(b);
+        try{
+            if (writer == null)
+            {
+                throw new Exception("The writer could not be initialized");
+            }
+
+            writer.append(b.toString() + System.lineSeparator());
+            writer.flush();
+        }
+        catch(Exception ex){
+            System.out.println(ex.getMessage());      
+        }
+    }
+
+    public void bookFlight(String takeOffPoint, String destination) {
+        
+        flightManager = new FlightManager();
+        passengerManager = new PassengerManager();
+        flightManager.findAvailableFlight(takeOffPoint, destination);
+        int check;
+        String flightNo;
+        do {
+            System.out.print("Enter the Fligth number of your choosed Flight: ");
+            flightNo = reader.nextLine();
+            check = flightManager.checkAvaFlight(flightNo);
+        }while(check == 0);
+        Flight f = flightManager.find(flightNo);
+        System.out.printf("Cost of the flight is %f.\n", f.price);
+        System.out.println("Do you want to proceed to book the flight? ");
+        System.out.println("Please enter (1) to proceed or (0) to cancel: ");
+        int yes_No = reader.nextInt(); reader.nextLine();
+        if(yes_No == 0) {
+            return;
+        }
+
+        System.out.println("Enter your Name:");
+        String name = reader.nextLine();
+        System.out.println("Enter your Address: ");
+        String address = reader.nextLine();
+        System.out.println("Enter your Email: ");
+        String email = reader.nextLine();
+        System.out.println("Enter your Phone No: ");
+        String phone_No = reader.nextLine();
+        
+        // Make payment here............
+        f.availebleSeats -= 1;
+        flightManager.updatedOuput();
+        int seatNo = f.availebleSeats + 1;
+        String id = ( Integer.toString(seatNo) ) + 100;
+
+        System.out.println("Thank you for choosing to fly with us...");
+
+        Booking b = new Booking(id, flightNo, f.takeOff_Time, seatNo);
+        passengerManager.create(id, name, address, email, phone_No);
         bookings.add(b);
         try{
             if (writer == null)
